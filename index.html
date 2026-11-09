@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Contact us – accessibility experiences</title>
+<style>
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font-family:Verdana,Geneva,sans-serif;background:#fff;color:#222}
+body.e3{background:#e9f1e9}
+.bar{background:#1f2937;color:#fff;padding:10px 14px;font:14px/1.4 system-ui,sans-serif;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.bar b{margin-right:6px}
+.bar button{font:inherit;padding:6px 12px;border-radius:6px;border:1px solid #9ca3af;background:#374151;color:#fff;cursor:pointer}
+.bar button[aria-pressed=true]{background:#fff;color:#111}
+#stage{max-width:640px;margin:0 auto;padding:16px;overflow-x:hidden}
+input,select,textarea,button{font-family:inherit}
+#stage h1{font-family:Georgia,serif}
+#f>:nth-child(5n+1){font-family:Georgia,serif}
+#f>:nth-child(5n+2){font-family:"Courier New",Courier,monospace}
+#f>:nth-child(5n+3){font-family:"Comic Sans MS","Comic Sans",cursive}
+#f>:nth-child(5n+4){font-family:Verdana,Geneva,sans-serif}
+#f>:nth-child(5n+5){font-family:"Times New Roman",Times,serif}
+
+/* EXPERIENCE 1 */
+.l1 h1{font-size:22px;margin:6px 0 18px}
+.l1 .r{display:inline-block;vertical-align:top;margin-bottom:14px}
+.l1 label{display:block;font-size:11px;color:#666;margin-bottom:2px}
+.l1 input,.l1 select,.l1 textarea{width:100%;font-size:12px;padding:5px;border:1px solid #ddd;background:#fff}
+.l1 .bad{border-color:#e53935}
+.l1 .b1{font-size:12px;border:0;background:none;color:#5b7;padding:4px 8px;text-decoration:underline;cursor:pointer}
+.l1 #msgbox{font-size:11px;color:#c66;margin-top:10px}
+
+/* EXPERIENCE 2 */
+.l2{font-size:10px;color:#aaa}
+.l2 h1{font-size:14px;color:#ccc;font-weight:400;margin:4px 0 30px 40px}
+.l2 .r{display:inline-block;vertical-align:top}
+.l2 input,.l2 select,.l2 textarea{width:100%;font-size:10px;padding:6px;border:0;background:#fcfcfc;color:#bbb}
+.l2 ::placeholder{color:#d4d4d4}
+.l2 .bad::placeholder{color:#f4c4c4}
+.l2 .bad{background:#fffafa}
+.l2 .b2{border:0;background:none;color:#ccc;font-size:9px;cursor:default;padding:2px;margin-right:30px}
+.l2 .b2:focus{outline:1px dotted #ddd}
+
+/* EXPERIENCE 3 – subtle */
+.l3{font-size:13px;color:#86ab86}
+.l3 *:focus{outline:none!important}
+.l3 h1{font-size:22px;margin:6px 0 14px;color:#8fb18f}
+.l3 .t{margin:16px 0 4px;font-size:12px}
+.l3 input,.l3 select,.l3 textarea{display:block;width:100%;font-size:13px;padding:8px;border:1px solid #dbe8db;background:#e2ede2;color:#86ab86}
+.l3 ::placeholder{color:#a8c3a8}
+.l3 .bad{background:#f0e6e6}
+.l3 .row{display:flex;gap:14px;align-items:center;font-size:12px;margin-top:4px}
+.l3 .fake{display:inline-block;padding:10px 24px;border-radius:6px;background:#2f6fed;color:#fff;font-weight:700;cursor:pointer;box-shadow:0 2px 0 #1d4fb8;margin:22px 10px 0 0}
+.l3 .fake.alt{background:#fff;color:#2f6fed;border:2px solid #2f6fed;box-shadow:none;padding:8px 22px}
+.l3 .ghost{border:0;background:none;color:#a5c2a5;font-size:12px;font-family:inherit;padding:2px;margin:26px 18px 0 0;cursor:default}
+.l3 .ghost:focus{outline:none}
+.l3 #msgbox{margin-top:16px;font-size:12px;color:#a5c2a5}
+</style>
+</head>
+<body>
+<div class="bar" id="bar">
+  <b>Choose an experience:</b>
+  <button type="button" data-l="1">Experience 1</button>
+  <button type="button" data-l="2">Experience 2</button>
+  <button type="button" data-l="3">Experience 3</button>
+</div>
+<div id="stage"></div>
+
+<script>
+var cur=1,stage=document.getElementById('stage');
+
+function rows(a,fn){return a.map(function(x){return fn(x[0],x[1],x[2],x[3])}).join('')}
+
+var T={
+1:function(){
+ var a=[['fn','First name',48,0],['ln','Last name',44,8],['em','Email',70,0],['ph','Phone',25,6],['co','Company',60,0],['jt','Job title',36,14],['a1','Address line 1',90,0],['tw','Town',40,0],['pc','Postcode',20,22]];
+ return '<h1>Contact us</h1><form id="f" novalidate>'+
+ rows(a,function(i,l,w,m){return '<div class="r" style="width:'+w+'%;margin-left:'+m+'px"><label for="'+i+'">'+l+'</label><input id="'+i+'" name="'+i+'"></div>'})+
+ '<div class="r" style="width:55%"><label for="sel">Reason</label><select id="sel"><option>General enquiry</option><option>Sales</option><option>Support</option><option>Other</option></select></div>'+
+ '<div class="r" style="width:100%"><label for="msg" style="text-align:right">Message</label><textarea id="msg" rows="4"></textarea></div>'+
+ '<div style="font-size:11px;color:#666;margin-bottom:14px">Preferred contact<br><input type="radio" name="pcm" id="r1" style="width:auto"><label for="r1" style="display:inline">Email</label> <input type="radio" name="pcm" id="r2" style="width:auto"><label for="r2" style="display:inline">Phone</label></div>'+
+ '<div style="font-size:11px;margin-bottom:16px"><input type="checkbox" id="nl" style="width:auto"> <label for="nl" style="display:inline">Newsletter</label></div>'+
+ '<button type="button" class="b1" onclick="sub()">Send</button><button type="button" class="b1" onclick="clr()">Clear</button><div id="msgbox"></div></form>';
+},
+2:function(){
+ var a=[['fn','Name',60,0],['ln','Other',30,18],['em','Contact',80,3],['ph','Number',22,40],['co','Org',50,0],['jt','Role?',30,9],['a1','Location',70,0],['tw','Area',33,25],['pc','Code',18,4]];
+ return '<h1>Get in touch</h1><form id="f" novalidate>'+
+ rows(a,function(i,p,w,m){return '<div class="r" style="width:'+w+'%;margin-left:'+m+'px;margin-bottom:'+(8+(m%7)*5)+'px"><input id="'+i+'" name="'+i+'" placeholder="'+p+'"></div>'})+
+ '<div class="r" style="width:45%;margin-bottom:30px"><select id="sel"><option>Choose</option><option>A</option><option>B</option><option>Other</option></select></div>'+
+ '<div class="r" style="width:96%;margin-left:12px"><textarea id="msg" rows="3" placeholder="Details"></textarea></div>'+
+ '<div style="margin:6px 0 22px 90px">Email <input type="radio" name="pcm" style="width:auto"> Phone <input type="radio" name="pcm" style="width:auto"> Post <input type="radio" name="pcm" style="width:auto"></div>'+
+ '<div style="margin-left:15px"><button type="button" class="b2" onclick="clr()">reset</button><button type="button" class="b2" onclick="sub()">send</button></div></form>';
+},
+3:function(){
+ return '<h1>Contact us</h1><form id="f" novalidate>'+
+ '<div class="t">Your name</div><input id="fn" name="fn">'+
+ '<div class="t">Email address</div><input id="em" name="em" placeholder="name@example.com">'+
+ '<div class="t">Phone</div><input id="ph" name="ph" placeholder="optional?">'+
+ '<div class="t">What is this about?</div><select id="sel"><option>Choose one</option><option>General enquiry</option><option>Sales</option><option>Support</option></select>'+
+ '<div class="t">Your message</div><textarea id="msg" rows="5"></textarea>'+
+ '<div class="t">How should we reply?</div><div class="row"><input type="radio" name="pcm" style="width:auto"><span>Email</span><input type="radio" name="pcm" style="width:auto"><span>Phone</span></div>'+
+ '<div class="row" style="margin-top:14px"><input type="checkbox" style="width:auto"><span>Keep me updated with news</span></div>'+
+ '<div><div class="fake">Send message</div><div class="fake alt">Save draft</div><div class="fake alt">Attach file</div></div>'+
+ '<div><button type="button" class="ghost" onclick="sub()">send</button><button type="button" class="ghost" onclick="clr()">reset</button></div>'+
+ '<div id="msgbox"></div></form>';
+}};
+
+function F(){return document.getElementById('f')}
+function clr(){if(F())F().reset();clearBad();var m=document.getElementById('msgbox');if(m)m.textContent=''}
+function clearBad(){document.querySelectorAll('.bad').forEach(function(e){e.classList.remove('bad')})}
+function sub(){
+ var ids=['fn','em','msg'],bad=ids.filter(function(i){return !document.getElementById(i).value.trim()});
+ clearBad();
+ bad.forEach(function(i){document.getElementById(i).classList.add('bad')});
+ var m=document.getElementById('msgbox');
+ if(cur===1){
+  m.textContent=bad.length?'Something went wrong. Please try again.':'Thanks, message sent.';
+  if(!bad.length)F().reset();
+ }else if(cur===2){
+  if(bad.length)setTimeout(function(){if(F())F().reset();clearBad()},2500);else F().reset();
+ }else{
+  if(!bad.length){m.textContent='Message sent.';F().reset()}else{m.textContent=''}
+ }
+}
+function setLevel(n){
+ cur=n;
+ stage.className='l'+n;stage.innerHTML=T[n]();
+ document.body.className='e'+n;
+ document.querySelectorAll('[data-l]').forEach(function(b){b.setAttribute('aria-pressed',String(+b.dataset.l===n))});
+}
+function fromHash(){
+ var m=/^#experience-([123])$/.exec(location.hash);
+ setLevel(m?+m[1]:1);
+}
+document.querySelectorAll('[data-l]').forEach(function(b){b.onclick=function(){location.hash='experience-'+b.dataset.l}});
+window.addEventListener('hashchange',fromHash);
+fromHash();
+</script>
+</body>
+</html>
